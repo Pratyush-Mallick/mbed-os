@@ -1788,13 +1788,6 @@ HAL_StatusTypeDef HAL_DMA2D_ConfigLayer(DMA2D_HandleTypeDef *hdma2d, uint32_t La
   assert_param(IS_DMA2D_ALPHA_INVERTED(hdma2d->LayerCfg[LayerIdx].AlphaInverted));
   assert_param(IS_DMA2D_RB_SWAP(hdma2d->LayerCfg[LayerIdx].RedBlueSwap));
 
-#if defined(DMA2D_FGPFCCR_CSS)
-  if ((LayerIdx == DMA2D_FOREGROUND_LAYER) && (hdma2d->LayerCfg[LayerIdx].InputColorMode == DMA2D_INPUT_YCBCR))
-  {
-    assert_param(IS_DMA2D_CHROMA_SUB_SAMPLING(hdma2d->LayerCfg[LayerIdx].ChromaSubSampling));
-  }
-
-#endif /* DMA2D_FGPFCCR_CSS */
   /* Process locked */
   __HAL_LOCK(hdma2d);
 
@@ -1838,13 +1831,6 @@ HAL_StatusTypeDef HAL_DMA2D_ConfigLayer(DMA2D_HandleTypeDef *hdma2d, uint32_t La
   else
   {
 
-#if defined(DMA2D_FGPFCCR_CSS)
-    if (pLayerCfg->InputColorMode == DMA2D_INPUT_YCBCR)
-    {
-      regValue |= (pLayerCfg->ChromaSubSampling << DMA2D_FGPFCCR_CSS_Pos);
-      regMask  |= DMA2D_FGPFCCR_CSS;
-    }
-#endif /* DMA2D_FGPFCCR_CSS */
 
     /* Write DMA2D FGPFCCR register */
     MODIFY_REG(hdma2d->Instance->FGPFCCR, regMask, regValue);
@@ -2066,7 +2052,7 @@ HAL_StatusTypeDef HAL_DMA2D_ConfigDeadTime(DMA2D_HandleTypeDef *hdma2d, uint8_t 
   *                 the configuration information for the DMA2D.
   * @retval HAL state
   */
-HAL_DMA2D_StateTypeDef HAL_DMA2D_GetState(const DMA2D_HandleTypeDef *hdma2d)
+HAL_DMA2D_StateTypeDef HAL_DMA2D_GetState(DMA2D_HandleTypeDef *hdma2d)
 {
   return hdma2d->State;
 }
@@ -2077,7 +2063,7 @@ HAL_DMA2D_StateTypeDef HAL_DMA2D_GetState(const DMA2D_HandleTypeDef *hdma2d)
   *               the configuration information for DMA2D.
   * @retval DMA2D Error Code
   */
-uint32_t HAL_DMA2D_GetError(const DMA2D_HandleTypeDef *hdma2d)
+uint32_t HAL_DMA2D_GetError(DMA2D_HandleTypeDef *hdma2d)
 {
   return hdma2d->ErrorCode;
 }
@@ -2187,3 +2173,4 @@ static void DMA2D_SetConfig(DMA2D_HandleTypeDef *hdma2d, uint32_t pdata, uint32_
   */
 #endif /* DMA2D */
 #endif /* HAL_DMA2D_MODULE_ENABLED */
+

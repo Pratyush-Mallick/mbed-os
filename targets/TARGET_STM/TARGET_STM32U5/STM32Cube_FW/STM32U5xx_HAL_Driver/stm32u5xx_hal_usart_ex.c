@@ -36,7 +36,6 @@
             starting RX/TX transfers.
 
   @endverbatim
-  ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
@@ -484,7 +483,7 @@ HAL_StatusTypeDef HAL_USARTEx_SetRxFifoThreshold(USART_HandleTypeDef *husart, ui
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_USARTEx_SetConfigAutonomousMode(USART_HandleTypeDef *husart,
-                                                      const USART_AutonomousModeConfTypeDef *sConfig)
+                                                      USART_AutonomousModeConfTypeDef *sConfig)
 {
   uint32_t tmpreg;
 
@@ -539,7 +538,7 @@ HAL_StatusTypeDef HAL_USARTEx_SetConfigAutonomousMode(USART_HandleTypeDef *husar
   * @param sConfig   Autonomous mode structure parameters.
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_USARTEx_GetConfigAutonomousMode(const USART_HandleTypeDef *husart,
+HAL_StatusTypeDef HAL_USARTEx_GetConfigAutonomousMode(USART_HandleTypeDef *husart,
                                                       USART_AutonomousModeConfTypeDef *sConfig)
 {
   uint32_t tmpreg;
@@ -654,4 +653,3 @@ static void USARTEx_SetNbDataToProcess(USART_HandleTypeDef *husart)
 /**
   * @}
   */
-

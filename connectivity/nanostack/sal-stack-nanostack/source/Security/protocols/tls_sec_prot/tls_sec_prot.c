@@ -320,7 +320,7 @@ static void client_tls_sec_prot_state_machine(sec_prot_t *prot)
             sec_prot_state_set(prot, &data->common, TLS_STATE_CREATE_REQ);
             prot->timer_start(prot);
             // Set default timeout for the total maximum length of the negotiation
-            sec_prot_timeout_set(&data->common, prot->sec_cfg->prot_cfg.sec_prot_retry_timeout);
+            sec_prot_default_timeout_set(&data->common);
             break;
 
         // Wait KMP-CREATE.request
@@ -354,8 +354,6 @@ static void client_tls_sec_prot_state_machine(sec_prot_t *prot)
             } else {
                 data->calculating = false;
             }
-
-            sec_prot_timeout_set(&data->common, prot->sec_cfg->prot_cfg.sec_prot_retry_timeout);
 
             if (data->tls_send.data) {
                 prot->send(prot, data->tls_send.data, data->tls_send.handled_len);
@@ -417,7 +415,7 @@ static void server_tls_sec_prot_state_machine(sec_prot_t *prot)
             sec_prot_state_set(prot, &data->common, TLS_STATE_CLIENT_HELLO);
             prot->timer_start(prot);
             // Set default timeout for the total maximum length of the negotiation
-            sec_prot_timeout_set(&data->common, prot->sec_cfg->prot_cfg.sec_prot_retry_timeout);
+            sec_prot_default_timeout_set(&data->common);
             break;
 
         // Wait EAP request, Identity (starts handshake on supplicant)
@@ -475,8 +473,6 @@ static void server_tls_sec_prot_state_machine(sec_prot_t *prot)
             } else {
                 data->calculating = false;
             }
-
-            sec_prot_timeout_set(&data->common, prot->sec_cfg->prot_cfg.sec_prot_retry_timeout);
 
             if (data->tls_send.data) {
                 prot->send(prot, data->tls_send.data, data->tls_send.handled_len);

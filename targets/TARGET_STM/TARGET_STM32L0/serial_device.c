@@ -79,15 +79,17 @@ static void uart2_irq(void)
 }
 #endif
 
-#if defined(USART4_BASE) || defined(USART5_BASE)
-static void uart4_5_irq(void)
+#if defined(USART4_BASE)
+static void uart4_irq(void)
 {
-#if defined(USART4_BASE)
     uart_irq(UART_4);
+}
 #endif
-#if defined(USART4_BASE)
+
+#if defined(USART5_BASE)
+static void uart5_irq(void)
+{
     uart_irq(UART_5);
-#endif
 }
 #endif
 
@@ -130,14 +132,14 @@ void serial_irq_set(serial_t *obj, SerialIrq irq, uint32_t enable)
 #if defined(USART4_BASE)
     if (obj_s->uart == UART_4) {
         irq_n = USART4_5_IRQn;
-        vector = (uint32_t)&uart4_5_irq;
+        vector = (uint32_t)&uart4_irq;
     }
 #endif
 
 #if defined(USART5_BASE)
     if (obj_s->uart == UART_5) {
         irq_n = USART4_5_IRQn;
-        vector = (uint32_t)&uart4_5_irq;
+        vector = (uint32_t)&uart5_irq;
     }
 #endif
 

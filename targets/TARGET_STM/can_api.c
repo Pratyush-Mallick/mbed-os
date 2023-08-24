@@ -24,13 +24,7 @@
 #include "PeripheralPins.h"
 #include "mbed_error.h"
 
-// Some STM32G4 series (and others) have 3 FDCAN devices
-// while others have 2
-#ifdef FDCAN3
-static uintptr_t can_irq_contexts[3] = {0};
-#else
 static uintptr_t can_irq_contexts[2] = {0};
-#endif
 static can_irq_handler irq_handler;
 
 /** Call all the init functions
@@ -148,16 +142,16 @@ static void _can_init_freq_direct(can_t *obj, const can_pinmap_t *pinmap, int hz
     // We use PLL1.Q clock right now so get its frequency
     PLL1_ClocksTypeDef pll1_clocks;
     HAL_RCCEx_GetPLL1ClockFreq(&pll1_clocks);
-    uint32_t ntq = pll1_clocks.PLL1_Q_Frequency / (uint32_t)hz;
+    int ntq = pll1_clocks.PLL1_Q_Frequency / hz;
 #else
 #if (defined RCC_PERIPHCLK_FDCAN1)
-    uint32_t ntq = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_FDCAN1) / (uint32_t)hz;
+    int ntq = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_FDCAN1) / hz;
 #else
-    uint32_t ntq = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_FDCAN) / (uint32_t)hz;
+    int ntq = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_FDCAN) / hz;
 #endif
 #endif
 
-    uint32_t nominalPrescaler = 1;
+    int nominalPrescaler = 1;
     // !When the sample point should be lower than 50%, this must be changed to
     // !IS_FDCAN_NOMINAL_TSEG2(ntq/nominalPrescaler), since
     // NTSEG2 and SJW max values are lower. For now the sample point is fix @75%
@@ -328,20 +322,20 @@ int can_frequency(can_t *obj, int f)
     // STM32H7 doesn't support yet HAL_RCCEx_GetPeriphCLKFreq for FDCAN
     PLL1_ClocksTypeDef pll1_clocks;
     HAL_RCCEx_GetPLL1ClockFreq(&pll1_clocks);
-    uint32_t ntq = pll1_clocks.PLL1_Q_Frequency / (uint32_t)f;
+    int ntq = pll1_clocks.PLL1_Q_Frequency / f;
 #else
 #if (defined RCC_PERIPHCLK_FDCAN1)
-    uint32_t ntq = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_FDCAN1) / (uint32_t)f;
+    int ntq = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_FDCAN1) / f;
 #else
-    uint32_t ntq = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_FDCAN) / (uint32_t)f;
+    int ntq = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_FDCAN) / f;
 #endif
 #endif
 
-    uint32_t nominalPrescaler = 1;
+    int nominalPrescaler = 1;
     // !When the sample point should be lower than 50%, this must be changed to
-    // !IS_FDCAN_NOMINAL_TSEG2(ntq/nominalPrescaler), since
+    // !IS_FDCAN_DATA_TSEG2(ntq/nominalPrescaler), since
     // NTSEG2 and SJW max values are lower. For now the sample point is fix @75%
-    while (!IS_FDCAN_NOMINAL_TSEG1(ntq / nominalPrescaler)) {
+    while (!IS_FDCAN_DATA_TSEG1(ntq / nominalPrescaler)) {
         nominalPrescaler ++;
         if (!IS_FDCAN_NOMINAL_PRESCALER(nominalPrescaler)) {
             error("Could not determine good nominalPrescaler. Bad clock value\n");
@@ -552,7 +546,7 @@ static void can_irq(CANName name, int id)
             irq_handler(can_irq_contexts[id], IRQ_TX);
         }
     }
-#if (defined FDCAN_IT_RX_BUFFER_NEW_MESSAGE) && !defined(TARGET_STM32H7)
+#if (defined FDCAN_IT_RX_BUFFER_NEW_MESSAGE)
     if (__HAL_FDCAN_GET_IT_SOURCE(&CanHandle, FDCAN_IT_RX_BUFFER_NEW_MESSAGE)) {
         if (__HAL_FDCAN_GET_FLAG(&CanHandle, FDCAN_IT_RX_BUFFER_NEW_MESSAGE)) {
             __HAL_FDCAN_CLEAR_FLAG(&CanHandle, FDCAN_IT_RX_BUFFER_NEW_MESSAGE);
@@ -634,7 +628,7 @@ void can_irq_set(can_t *obj, CanIrqType type, uint32_t enable)
             interrupts = FDCAN_IT_TX_COMPLETE;
             break;
         case IRQ_RX:
-#if (defined FDCAN_IT_RX_BUFFER_NEW_MESSAGE) && !defined(TARGET_STM32H7)
+#if (defined FDCAN_IT_RX_BUFFER_NEW_MESSAGE)
             interrupts = FDCAN_IT_RX_BUFFER_NEW_MESSAGE;
 #else
             interrupts = FDCAN_IT_RX_FIFO0_NEW_MESSAGE;
@@ -1030,7 +1024,7 @@ int can_read(can_t *obj, CAN_Message *msg, int handle)
 
     msg->type = (CANType)(((uint8_t)0x02 & can->sFIFOMailBox[rxfifo_default].RIR) >> 1);
     /* Get the DLC */
-    msg->len = ((uint8_t)0x0F & can->sFIFOMailBox[rxfifo_default].RDTR < 8) ? ((uint8_t)0x0F & can->sFIFOMailBox[rxfifo_default].RDTR) : ((uint8_t) 8);
+    msg->len = (uint8_t)0x0F & can->sFIFOMailBox[rxfifo_default].RDTR;
     /* Get the FMI */
     // msg->FMI = (uint8_t)0xFF & (can->sFIFOMailBox[rxfifo_default].RDTR >> 8);
     /* Get the data field */

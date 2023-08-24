@@ -148,12 +148,12 @@ void SPI::_do_construct()
 
 SPI::~SPI()
 {
-    SPI::lock();
+    lock();
     /* Make sure a stale pointer isn't left in peripheral's owner field */
     if (_peripheral->owner == this) {
         _peripheral->owner = nullptr;
     }
-    SPI::unlock();
+    unlock();
 }
 
 SPI::spi_peripheral_s *SPI::_lookup(SPI::SPIName name)

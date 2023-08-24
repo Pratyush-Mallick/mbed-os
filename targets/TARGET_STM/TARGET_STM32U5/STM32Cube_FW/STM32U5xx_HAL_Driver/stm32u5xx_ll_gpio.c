@@ -31,7 +31,7 @@
   */
 
 #if defined (GPIOA) || defined (GPIOB) || defined (GPIOC) || defined (GPIOD) || defined (GPIOE) || defined (GPIOF) || \
-    defined (GPIOG) || defined (GPIOH) || defined (GPIOI) || defined (GPIOJ)
+    defined (GPIOG) || defined (GPIOH) || defined (GPIOI)
 
 /** @addtogroup GPIO_LL
   * @{
@@ -101,7 +101,7 @@
   *          - SUCCESS: GPIO registers are de-initialized
   *          - ERROR:   Wrong GPIO Port
   */
-ErrorStatus LL_GPIO_DeInit(const GPIO_TypeDef *GPIOx)
+ErrorStatus LL_GPIO_DeInit(GPIO_TypeDef *GPIOx)
 {
   ErrorStatus status = SUCCESS;
 
@@ -166,13 +166,6 @@ ErrorStatus LL_GPIO_DeInit(const GPIO_TypeDef *GPIOx)
     LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOI);
   }
 #endif /* GPIOI */
-#if defined(GPIOJ)
-  else if (GPIOx == GPIOJ)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOJ);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOJ);
-  }
-#endif /* GPIOJ */
   else
   {
     status = ERROR;
@@ -213,6 +206,9 @@ ErrorStatus LL_GPIO_Init(GPIO_TypeDef *GPIOx, LL_GPIO_InitTypeDef *GPIO_InitStru
 
     if (currentpin != 0U)
     {
+      /* Pin Mode configuration */
+      LL_GPIO_SetPinMode(GPIOx, currentpin, GPIO_InitStruct->Mode);
+
       if ((GPIO_InitStruct->Mode == LL_GPIO_MODE_OUTPUT) || (GPIO_InitStruct->Mode == LL_GPIO_MODE_ALTERNATE))
       {
         /* Check Speed mode parameters */
@@ -220,12 +216,6 @@ ErrorStatus LL_GPIO_Init(GPIO_TypeDef *GPIOx, LL_GPIO_InitTypeDef *GPIO_InitStru
 
         /* Speed mode configuration */
         LL_GPIO_SetPinSpeed(GPIOx, currentpin, GPIO_InitStruct->Speed);
-
-        /* Check Output mode parameters */
-        assert_param(IS_LL_GPIO_OUTPUT_TYPE(GPIO_InitStruct->OutputType));
-
-        /* Output mode configuration*/
-        LL_GPIO_SetPinOutputType(GPIOx, GPIO_InitStruct->Pin, GPIO_InitStruct->OutputType);
       }
 
       /* Pull-up Pull down resistor configuration*/
@@ -246,11 +236,18 @@ ErrorStatus LL_GPIO_Init(GPIO_TypeDef *GPIOx, LL_GPIO_InitTypeDef *GPIO_InitStru
           LL_GPIO_SetAFPin_8_15(GPIOx, currentpin, GPIO_InitStruct->Alternate);
         }
       }
-
-      /* Pin Mode configuration */
-      LL_GPIO_SetPinMode(GPIOx, currentpin, GPIO_InitStruct->Mode);
     }
     pinpos++;
+  }
+
+  if ((GPIO_InitStruct->Mode == LL_GPIO_MODE_OUTPUT) || (GPIO_InitStruct->Mode == LL_GPIO_MODE_ALTERNATE))
+  {
+    /* Check Output mode parameters */
+    assert_param(IS_LL_GPIO_OUTPUT_TYPE(GPIO_InitStruct->OutputType));
+
+    /* Output mode configuration*/
+    LL_GPIO_SetPinOutputType(GPIOx, GPIO_InitStruct->Pin, GPIO_InitStruct->OutputType);
+
   }
   return (SUCCESS);
 }
@@ -286,7 +283,7 @@ void LL_GPIO_StructInit(LL_GPIO_InitTypeDef *GPIO_InitStruct)
   */
 
 #endif /* defined (GPIOA) || defined (GPIOB) || defined (GPIOC) || defined (GPIOD) || defined (GPIOE) || \
-          defined (GPIOF) || defined (GPIOG) || defined (GPIOH) || defined (GPIOI) || defined (GPIOJ) */
+          defined (GPIOF) || defined (GPIOG) || defined (GPIOH) || defined (GPIOI) */
 
 /**
   * @}

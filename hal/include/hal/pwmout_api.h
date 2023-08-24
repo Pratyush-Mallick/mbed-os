@@ -158,7 +158,7 @@ void pwmout_pulsewidth_us(pwmout_t *obj, int us);
 /** Read the PWM pulsewidth specified in microseconds
  *
  * @param obj The pwmout object
- * @return A int output pulsewidth
+ * @return A int output pulsewitdth
  */
 int pwmout_read_pulsewidth_us(pwmout_t *obj);
 

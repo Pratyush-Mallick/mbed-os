@@ -32,8 +32,4 @@ target_sources(mbed-usb
         source/USBSerial.cpp
 )
 
-target_link_libraries(mbed-usb
-    INTERFACE
-        mbed-events
-        mbed-storage
-)
+target_link_libraries(mbed-usb INTERFACE mbed-storage)

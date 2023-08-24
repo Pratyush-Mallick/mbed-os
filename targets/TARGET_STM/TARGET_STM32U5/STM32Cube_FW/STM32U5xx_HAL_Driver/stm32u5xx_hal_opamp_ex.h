@@ -42,7 +42,6 @@ extern "C" {
   * @{
   */
 
-#if defined(OPAMP2)
 /* I/O operation functions  *****************************************************/
 /** @addtogroup OPAMPEx_Exported_Functions_Group1 Extended Input and Output operation functions
   * @{
@@ -52,7 +51,6 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
 /**
   * @}
   */
-#endif /* OPAMP2 */
 
 /* Peripheral Control functions  ************************************************/
 /** @addtogroup OPAMPEx_Exported_Functions_Group2

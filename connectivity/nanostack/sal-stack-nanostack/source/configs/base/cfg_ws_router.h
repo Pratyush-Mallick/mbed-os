@@ -17,6 +17,5 @@
 
 #include "cfg_ws_host.h"
 
-#define HAVE_RPL
 #define HAVE_WS_ROUTER
 #define HAVE_EAPOL_RELAY

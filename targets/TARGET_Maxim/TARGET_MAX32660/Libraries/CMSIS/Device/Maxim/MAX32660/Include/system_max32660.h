@@ -3,8 +3,9 @@
  * @brief   System-specific header file
  */
 
-/******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+
+/*******************************************************************************
+ * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +35,11 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
+ *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32660_INCLUDE_SYSTEM_MAX32660_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32660_INCLUDE_SYSTEM_MAX32660_H_
+#ifndef _SYSTEM_MAX32660_H_
+#define _SYSTEM_MAX32660_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,22 +52,20 @@ extern "C" {
  *----------------------------------------------------------------------------*/
 
 #ifndef HFX_FREQ
-#define HFX_FREQ 32768
+#define HFX_FREQ                32768
 #endif
 
-/* NOTE: This is the nominal value for NANORING. The actual value may vary from chip to chip. 
-         Update if use of this oscillator requires precise timing.*/
 #ifndef NANORING_FREQ
-#define NANORING_FREQ 8000
+#define NANORING_FREQ           8000
 #endif
 
 #ifndef HIRC96_FREQ
-#define HIRC96_FREQ 96000000
+#define HIRC96_FREQ             96000000
 #endif
 
-extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock)  */
+extern uint32_t SystemCoreClock;    /*!< System Clock Frequency (Core Clock)  */
 #ifndef PeripheralClock
-#define PeripheralClock (SystemCoreClock / 2) /*!< Peripheral Clock Frequency */
+#define         PeripheralClock     (SystemCoreClock /2)    /*!< Peripheral Clock Frequency */
 #endif
 
 /*
@@ -88,4 +88,4 @@ void SystemCoreClockUpdate(void);
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32660_INCLUDE_SYSTEM_MAX32660_H_
+#endif /* _SYSTEM_MAX32660_H_ */

@@ -47,7 +47,6 @@
   * @{
   */
 
-#if defined(OPAMP2)
 /** @addtogroup OPAMPEx_Exported_Functions_Group1
   * @brief    Extended operation functions
   *
@@ -367,7 +366,7 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
 /**
   * @}
   */
-#endif /* OPAMP2 */
+
 
 /** @defgroup OPAMPEx_Exported_Functions_Group2 Peripheral Control functions
   *  @brief   Peripheral Control functions

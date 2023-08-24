@@ -38,7 +38,6 @@
 MEMORY
 {
     FLASH (rx)   : ORIGIN = MBED_APP_START, LENGTH = MBED_APP_SIZE
-    CCMRAM (rw)  : ORIGIN = 0x10000000, LENGTH = 4K
     RAM (rwx)    : ORIGIN = MBED_RAM_START + VECTORS_SIZE, LENGTH = MBED_RAM_SIZE - VECTORS_SIZE
 }
 
@@ -114,7 +113,7 @@ SECTIONS
 
     __etext = .;
     _sidata = .;
-
+    
     .data : AT (__etext)
     {
         __data_start__ = .;
@@ -162,7 +161,7 @@ SECTIONS
         . = ALIGN(32);
         __uninitialized_end = .;
     } > RAM
-
+    
     .bss :
     {
         . = ALIGN(8);

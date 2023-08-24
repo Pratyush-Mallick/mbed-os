@@ -42,7 +42,6 @@
 #include "6LoWPAN/ws/ws_pae_key_storage.h"
 
 #ifdef HAVE_WS
-#ifdef HAVE_PAE_AUTH
 
 #define TRACE_GROUP "wsks"
 
@@ -1082,6 +1081,5 @@ static void ws_pae_key_storage_array_ptk_invalid(sec_prot_keys_storage_t *storag
     storage_array->ptk_lifetime = 0;
 }
 
-#endif /* HAVE_PAE_AUTH */
 #endif /* HAVE_WS */
 

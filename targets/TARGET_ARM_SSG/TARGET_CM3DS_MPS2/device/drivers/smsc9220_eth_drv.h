@@ -480,34 +480,40 @@ uint32_t smsc9220_get_tx_data_fifo_size(const struct
 
 /**
  * \brief Sends data from the given buffer as an Ethernet packet.
- *        The data to send must be a full packet.
+ *        The full packet length must be specified at the beginning
+ *        of a new packet transmission.
  *
  * \param[in] dev Ethernet device structure \ref smsc9220_eth_dev_t
- * \param[in] data Pointer to the word aligned packet buffer to be sent.
- * \param[in] dlen Size of the packet in bytes.
+ * \param[in] total_payload_length Length of the ethernet payload.
+ *            Should be equal to the sum of passed buffers within a packet.
+ * \param[in] is_new_packet Should be set to true if the input buffer has to
+ *            be sent as the start of a new packet or as a full packet.
+ * \param[in] data Pointer to the data buffer to be sent.
+ * \param[in] current_size Size of the data in bytes.
  *
  * \return error code /ref smsc9220_error_t
  */
-enum smsc9220_error_t smsc9220_send_packet(
+enum smsc9220_error_t smsc9220_send_by_chunks(
         const struct smsc9220_eth_dev_t* dev,
-        void *data, uint32_t dlen);
+        uint32_t total_payload_length,
+        bool is_new_packet,
+        const char *data, uint32_t current_size);
 
 /**
  * \brief Reads an incoming Ethernet packet into the given buffer.
  *        Stops reading at packet border.
  *
  * \param[in] dev Ethernet device structure \ref smsc9220_eth_dev_t
- * \param[in,out] data Pointer to a pre-allocated word aligned input buffer.
- *                     Availability of packets, as well as, alignment and
- *                     allocating sufficient memory space is the caller's
+ * \param[in,out] data Pointer to a pre-allocated input buffer.
+ *                     Allocating sufficient memory space is the caller's
  *                     responsibility, which is typically done by calling
  *                     \ref smsc9220_peek_next_packet_size.
+ * \param[in] dlen Length of the allocated data in bytes.
  *
  * \return Number of bytes read from the Rx FIFO into the given buffer.
  */
-uint32_t smsc9220_receive_packet(
-        const struct smsc9220_eth_dev_t* dev,
-        void *data);
+uint32_t smsc9220_receive_by_chunks(const struct smsc9220_eth_dev_t* dev,
+                                        char *data, uint32_t dlen);
 
 /**
  * \brief Get the used space of Rx fifo in bytes.

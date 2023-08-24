@@ -153,16 +153,16 @@
 
 // Arduino Header
 #ifdef CYBSP_A0
-#define A0 CYBSP_A0
+#define A_0 CYBSP_A0
 #endif
 #ifdef CYBSP_A1
-#define A1 CYBSP_A1
+#define A_1 CYBSP_A1
 #endif
 #ifdef CYBSP_A2
-#define A2 CYBSP_A2
+#define A_2 CYBSP_A2
 #endif
 #ifdef CYBSP_A3
-#define A3 CYBSP_A3
+#define A_3 CYBSP_A3
 #endif
 #ifdef CYBSP_A4
 #define A4 CYBSP_A4

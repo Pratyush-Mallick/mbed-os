@@ -29,19 +29,19 @@
 #ifdef TARGET_FF_ARDUINO_UNO
 
 #ifndef A0
-#define A0  ARDUINO_UNO_A0
+#define A_0  ARDUINO_UNO_A0
 #endif
 
 #ifndef A1
-#define A1  ARDUINO_UNO_A1
+#define A_1  ARDUINO_UNO_A1
 #endif
 
 #ifndef A2
-#define A2  ARDUINO_UNO_A2
+#define A_2  ARDUINO_UNO_A2
 #endif
 
 #ifndef A3
-#define A3  ARDUINO_UNO_A3
+#define A_3  ARDUINO_UNO_A3
 #endif
 
 #ifndef A4
@@ -122,10 +122,10 @@
 
 #warning ARDUINO form factor should not be used any more => use ARDUINO_UNO
 
-#define ARDUINO_UNO_A0  A0
-#define ARDUINO_UNO_A1  A1
-#define ARDUINO_UNO_A2  A2
-#define ARDUINO_UNO_A3  A3
+#define ARDUINO_UNO_A0  A_0
+#define ARDUINO_UNO_A1  A_1
+#define ARDUINO_UNO_A2  A_2
+#define ARDUINO_UNO_A3  A_3
 #define ARDUINO_UNO_A4  A4
 #define ARDUINO_UNO_A5  A5
 #define ARDUINO_UNO_D0  D0

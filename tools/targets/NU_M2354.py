@@ -116,14 +116,14 @@ def m2354_tfm_bin(t_self, non_secure_image, secure_bin):
         "--public-key-format",
         'full',
         "--align",
-        '4',
+        '1',
         # Reasons for removing padding and boot magic option "--pad":
         # 1. PSA FWU API psa_fwu_install() will be responsible for writing boot magic to enable upgradeable.
         # 2. The image size gets smaller instead of slot size.
         #"--pad",
         "--pad-header",
         "-H",
-        '0x1000',
+        '0x400',
         "--overwrite-only",
         "-s",
         'auto', # Or modified_timestamp

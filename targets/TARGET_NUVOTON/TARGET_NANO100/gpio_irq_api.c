@@ -69,7 +69,7 @@ static PinName gpio_irq_debounce_arr[] = {
 #define MBED_CONF_TARGET_GPIO_IRQ_DEBOUNCE_SAMPLE_RATE GPIO_DBCLKSEL_16
 #endif
 
-int gpio_irq_init(gpio_irq_t *obj, PinName pin, gpio_irq_handler handler, uintptr_t context)
+int gpio_irq_init(gpio_irq_t *obj, PinName pin, gpio_irq_handler handler, uint32_t id)
 {
     if (pin == NC) {
         return -1;
@@ -84,7 +84,7 @@ int gpio_irq_init(gpio_irq_t *obj, PinName pin, gpio_irq_handler handler, uintpt
     obj->pin = pin;
     obj->irq_types = 0;
     obj->irq_handler = (uint32_t) handler;
-    obj->irq_id = context;
+    obj->irq_id = id;
     obj->next = NULL;
 
     GPIO_T *gpio_base = NU_PORT_BASE(port_index);

@@ -31,7 +31,7 @@ extern "C" {
   * @{
   */
 
-#if defined (DCACHE1) || defined (DCACHE2)
+#if defined (DCACHE1)
 
 /** @defgroup DCACHE_LL DCACHE
   * @{
@@ -40,10 +40,7 @@ extern "C" {
 /* Private types -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private constants ---------------------------------------------------------*/
-/** @defgroup DCACHE_Exported_Constants DCACHE Exported Constants
-  * @{
-  */
-/** @defgroup DCACHE_Command_Operation Command Operation
+/** @addtogroup DCACHE_Private_Constants DCACHE Private Constants
   * @{
   */
 #define LL_DCACHE_COMMAND_NO_OPERATION                    (0x00000000)
@@ -107,10 +104,6 @@ extern "C" {
 #define LL_DCACHE_MONITOR_WRITE_MISS      DCACHE_CR_WMISSMEN  /*!< Write Miss monitoring */
 #define LL_DCACHE_MONITOR_ALL             (DCACHE_CR_RHITMEN | DCACHE_CR_RMISSMEN \
                                            | DCACHE_CR_WHITMEN | DCACHE_CR_WMISSMEN)
-/**
-  * @}
-  */
-
 /**
   * @}
   */
@@ -185,7 +178,7 @@ __STATIC_INLINE void LL_DCACHE_Disable(DCACHE_TypeDef *DCACHEx)
   * @param  DCACHEx DCACHE instance
   * @retval 0: DCACHE is disabled, 1: DCACHE is enabled.
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsEnabled(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_IsEnabled(DCACHE_TypeDef *DCACHEx)
 {
   return ((READ_BIT(DCACHEx->CR, DCACHE_CR_EN) == (DCACHE_CR_EN)) ? 1UL : 0UL);
 }
@@ -208,7 +201,7 @@ __STATIC_INLINE void LL_DCACHE_SetStartAddress(DCACHE_TypeDef *DCACHEx, uint32_t
   * @param  DCACHEx DCACHE instance
   * @retval Start address of dcache command
   */
-__STATIC_INLINE uint32_t LL_DCACHE_GetStartAddress(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_GetStartAddress(DCACHE_TypeDef *DCACHEx)
 {
   return (uint32_t)(READ_REG(DCACHEx->CMDRSADDRR));
 }
@@ -231,7 +224,7 @@ __STATIC_INLINE void LL_DCACHE_SetEndAddress(DCACHE_TypeDef *DCACHEx, uint32_t a
   * @param  DCACHEx DCACHE instance
   * @retval End address of dcache command
   */
-__STATIC_INLINE uint32_t LL_DCACHE_GetEndAddress(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_GetEndAddress(DCACHE_TypeDef *DCACHEx)
 {
   return (uint32_t)(READ_REG(DCACHEx->CMDREADDRR));
 }
@@ -241,11 +234,8 @@ __STATIC_INLINE uint32_t LL_DCACHE_GetEndAddress(const DCACHE_TypeDef *DCACHEx)
   * @rmtoll CR       CACHECMD          LL_DCACHE_SetCommand
   * @param  DCACHEx DCACHE instance
   * @param  Command command to be applied for the dcache
-  *         Command can be one of the following values:
-  *         @arg @ref LL_DCACHE_COMMAND_INVALIDATE_BY_ADDR
-  *         @arg @ref LL_DCACHE_COMMAND_CLEAN_BY_ADDR
-  *         @arg @ref LL_DCACHE_COMMAND_CLEAN_INVALIDATE_BY_ADDR
-  *         @arg @ref LL_DCACHE_COMMAND_NO_OPERATION
+  *                       LL_DCACHE_COMMAND_INVALIDATE_BY_ADDR, LL_DCACHE_COMMAND_CLEAN_BY_ADDR,
+  *                       LL_DCACHE_COMMAND_CLEAN_INVALIDATE_BY_ADDR,LL_DCACHE_COMMAND_NO_OPERATION
   * @retval None
   */
 __STATIC_INLINE void LL_DCACHE_SetCommand(DCACHE_TypeDef *DCACHEx, uint32_t Command)
@@ -264,7 +254,7 @@ __STATIC_INLINE void LL_DCACHE_SetCommand(DCACHE_TypeDef *DCACHEx, uint32_t Comm
   *         @arg @ref LL_DCACHE_COMMAND_INVALIDATE_BY_ADDR
   *         @arg @ref LL_DCACHE_COMMAND_CLEAN_INVALIDATE_BY_ADDR
   */
-__STATIC_INLINE uint32_t LL_DCACHE_GetCommand(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_GetCommand(DCACHE_TypeDef *DCACHEx)
 {
   /*Get Dcache Command */
   return (uint32_t)(READ_BIT(DCACHEx->CR, DCACHE_CR_CACHECMD));
@@ -286,9 +276,7 @@ __STATIC_INLINE void LL_DCACHE_StartCommand(DCACHE_TypeDef *DCACHEx)
   * @rmtoll CR       HBURST          LL_DCACHE_SetReadBurstType
   * @param  DCACHEx DCACHE instance
   * @param  ReadBurstType Burst type to be applied for Data Cache
-  *         Burst type can be one of the following values:
-  *         @arg @ref LL_DCACHE_READ_BURST_WRAP
-  *         @arg @ref LL_DCACHE_READ_BURST_INCR
+  *                       LL_DCACHE_READ_BURST_WRAP, LL_DCACHE_READ_BURST_INCR.
   * @retval None
   */
 __STATIC_INLINE void LL_DCACHE_SetReadBurstType(DCACHE_TypeDef *DCACHEx, uint32_t ReadBurstType)
@@ -304,7 +292,7 @@ __STATIC_INLINE void LL_DCACHE_SetReadBurstType(DCACHE_TypeDef *DCACHEx, uint32_
   *         @arg @ref LL_DCACHE_READ_BURST_WRAP
   *         @arg @ref LL_DCACHE_READ_BURST_INCR
   */
-__STATIC_INLINE uint32_t LL_DCACHE_GetReadBurstType(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_GetReadBurstType(DCACHE_TypeDef *DCACHEx)
 {
   return (uint32_t)(READ_BIT(DCACHEx->CR, DCACHE_CR_HBURST));
 }
@@ -375,7 +363,7 @@ __STATIC_INLINE void LL_DCACHE_DisableMonitors(DCACHE_TypeDef *DCACHEx, uint32_t
   *            @arg LL_DCACHE_MONITOR_ALL
   * @retval State of parameter value (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsEnabledMonitors(const DCACHE_TypeDef *DCACHEx, uint32_t Monitors)
+__STATIC_INLINE uint32_t LL_DCACHE_IsEnabledMonitors(DCACHE_TypeDef *DCACHEx, uint32_t Monitors)
 {
   return (((READ_BIT(DCACHEx->CR, (DCACHE_CR_WMISSMEN | DCACHE_CR_WHITMEN | DCACHE_CR_RMISSMEN | DCACHE_CR_RHITMEN))\
             & Monitors) == (Monitors)) ? 1UL : 0UL);
@@ -409,7 +397,7 @@ __STATIC_INLINE void LL_DCACHE_ResetMonitors(DCACHE_TypeDef *DCACHEx, uint32_t M
   * @param  DCACHEx DCACHE instance
   * @retval Value between Min_Data=0 and Max_Data=0xFFFFFFFF
   */
-__STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetReadHitValue(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetReadHitValue(DCACHE_TypeDef *DCACHEx)
 {
   return DCACHEx->RHMONR;
 }
@@ -420,7 +408,7 @@ __STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetReadHitValue(const DCACHE_TypeDef 
   * @param  DCACHEx DCACHE instance
   * @retval Value between Min_Data=0 and Max_Data=0xFFFF
   */
-__STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetReadMissValue(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetReadMissValue(DCACHE_TypeDef *DCACHEx)
 {
   return DCACHEx->RMMONR;
 }
@@ -431,7 +419,7 @@ __STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetReadMissValue(const DCACHE_TypeDef
   * @param  DCACHEx DCACHE instance
   * @retval Value between Min_Data=0 and Max_Data=0xFFFFFFFF
   */
-__STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetWriteHitValue(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetWriteHitValue(DCACHE_TypeDef *DCACHEx)
 {
   return DCACHEx->WHMONR;
 }
@@ -442,7 +430,7 @@ __STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetWriteHitValue(const DCACHE_TypeDef
   * @param  DCACHEx DCACHE instance
   * @retval Value between Min_Data=0 and Max_Data=0xFFFF
   */
-__STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetWriteMissValue(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_Monitor_GetWriteMissValue(DCACHE_TypeDef *DCACHEx)
 {
   return DCACHEx->WMMONR;
 }
@@ -483,7 +471,7 @@ __STATIC_INLINE void LL_DCACHE_DisableIT_BSYEND(DCACHE_TypeDef *DCACHEx)
   * @param  DCACHEx DCACHE instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsEnabledIT_BSYEND(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_IsEnabledIT_BSYEND(DCACHE_TypeDef *DCACHEx)
 {
   return ((READ_BIT(DCACHEx->IER, DCACHE_IER_BSYENDIE) == (DCACHE_IER_BSYENDIE)) ? 1UL : 0UL);
 }
@@ -516,7 +504,7 @@ __STATIC_INLINE void LL_DCACHE_DisableIT_ERR(DCACHE_TypeDef *DCACHEx)
   * @param  DCACHEx DCACHE instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsEnabledIT_ERR(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_IsEnabledIT_ERR(DCACHE_TypeDef *DCACHEx)
 {
   return ((READ_BIT(DCACHEx->IER, DCACHE_IER_ERRIE) == (DCACHE_IER_ERRIE)) ? 1UL : 0UL);
 }
@@ -549,7 +537,7 @@ __STATIC_INLINE void LL_DCACHE_DisableIT_CMDEND(DCACHE_TypeDef *DCACHEx)
   * @param  DCACHEx DCACHE instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsEnabledIT_CMDEND(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_IsEnabledIT_CMDEND(DCACHE_TypeDef *DCACHEx)
 {
   return ((READ_BIT(DCACHEx->IER, DCACHE_IER_CMDENDIE) == (DCACHE_IER_CMDENDIE)) ? 1UL : 0UL);
 }
@@ -593,7 +581,7 @@ __STATIC_INLINE void LL_DCACHE_ClearFlag_CMDEND(DCACHE_TypeDef *DCACHEx)
   * @param  DCACHEx DCACHE instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_BUSY(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_BUSY(DCACHE_TypeDef *DCACHEx)
 {
   return ((READ_BIT(DCACHEx->SR, DCACHE_SR_BUSYF) == (DCACHE_SR_BUSYF)) ? 1UL : 0UL);
 }
@@ -604,7 +592,7 @@ __STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_BUSY(const DCACHE_TypeDef *DCACH
   * @param  DCACHEx DCACHE instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_BSYEND(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_BSYEND(DCACHE_TypeDef *DCACHEx)
 {
   return ((READ_BIT(DCACHEx->SR, DCACHE_SR_BSYENDF) == (DCACHE_SR_BSYENDF)) ? 1UL : 0UL);
 }
@@ -615,7 +603,7 @@ __STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_BSYEND(const DCACHE_TypeDef *DCA
   * @param  DCACHEx DCACHE instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_ERR(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_ERR(DCACHE_TypeDef *DCACHEx)
 {
   return ((READ_BIT(DCACHEx->SR, DCACHE_SR_ERRF) == (DCACHE_SR_ERRF)) ? 1UL : 0UL);
 }
@@ -626,7 +614,7 @@ __STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_ERR(const DCACHE_TypeDef *DCACHE
   * @param  DCACHEx DCACHE instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_BUSYCMD(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_BUSYCMD(DCACHE_TypeDef *DCACHEx)
 {
   return ((READ_BIT(DCACHEx->SR, DCACHE_SR_BUSYCMDF) == (DCACHE_SR_BUSYCMDF)) ? 1UL : 0UL);
 }
@@ -637,7 +625,7 @@ __STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_BUSYCMD(const DCACHE_TypeDef *DC
   * @param  DCACHEx DCACHE instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_CMDEND(const DCACHE_TypeDef *DCACHEx)
+__STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_CMDEND(DCACHE_TypeDef *DCACHEx)
 {
   return ((READ_BIT(DCACHEx->SR, DCACHE_SR_CMDENDF) == (DCACHE_SR_CMDENDF)) ? 1UL : 0UL);
 }
@@ -654,7 +642,7 @@ __STATIC_INLINE uint32_t LL_DCACHE_IsActiveFlag_CMDEND(const DCACHE_TypeDef *DCA
   * @}
   */
 
-#endif /* DCACHE1 || DCACHE2 */
+#endif /* defined(DCACHE1) */
 
 /**
   * @}

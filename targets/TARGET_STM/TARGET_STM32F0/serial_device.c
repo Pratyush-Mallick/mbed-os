@@ -17,14 +17,14 @@
 
 #include "serial_api_hal.h"
 
-#if defined (TARGET_STM32F031x6)
+#if defined (TARGET_STM32F031K6)
 #define UART_NUM (1)
-#elif defined (TARGET_STM32F030x8) || defined (TARGET_STM32F051x8) || defined (TARGET_STM32F042x6)
+#elif defined (TARGET_STM32F030R8) || defined (TARGET_STM32F051R8) || defined (TARGET_STM32F042K6)
 #define UART_NUM (2)
-#elif defined (TARGET_STM32F070xB) || defined (TARGET_STM32F072xB)
+#elif defined (TARGET_STM32F070RB) || defined (TARGET_STM32F072RB)
 #define UART_NUM (4)
 #else
-#define UART_NUM (8) // max value (TARGET_STM32F091xC)
+#define UART_NUM (8) // max value (TARGET_STM32F091RC)
 #endif
 
 uint32_t serial_irq_ids[UART_NUM] = {0};
