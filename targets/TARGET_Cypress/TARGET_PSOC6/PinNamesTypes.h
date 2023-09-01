@@ -28,6 +28,7 @@
 #define PullDown CYHAL_GPIO_DRIVE_PULLDOWN
 #define PullUp CYHAL_GPIO_DRIVE_PULLUP
 
+#warning Pin names modified to avoid conflict with EI Dsp libraries when using ARM Compiler.
 // Arduino Headers
 #ifdef CYBSP_A0
 #define A_0 CYBSP_A0

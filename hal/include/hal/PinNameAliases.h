@@ -27,7 +27,7 @@
 #if defined (TARGET_FF_ARDUINO) || (TARGET_FF_ARDUINO_UNO)
 
 #ifdef TARGET_FF_ARDUINO_UNO
-
+#warning Pin names modified to avoid conflict with EI Dsp libraries when using ARM Compiler.
 #ifndef A0
 #define A_0  ARDUINO_UNO_A0
 #endif

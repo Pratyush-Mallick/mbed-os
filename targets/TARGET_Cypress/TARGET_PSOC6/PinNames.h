@@ -151,6 +151,7 @@
 #define QSPI_FLASH1_CSN CYBSP_QSPI_SS
 #endif
 
+#warning Pin names modified to avoid conflict with EI Dsp libraries when using ARM Compiler.
 // Arduino Header
 #ifdef CYBSP_A0
 #define A_0 CYBSP_A0
